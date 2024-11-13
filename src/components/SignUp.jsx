@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import auth from "../firebase.init";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -35,9 +35,11 @@ const SignUp = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        // console.log(result);
-        // console.log(result.user);
         setErrorMessage(null);
+        sendEmailVerification(auth.currentUser)
+        .then(()=>{
+            console.log("email verification send");
+        })
       })
       .catch((error) => {
         console.log(error);
